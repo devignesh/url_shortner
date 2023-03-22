@@ -44,6 +44,8 @@ func (h *urlShortenerHandler) ShortenURL(c *gin.Context) {
 		return
 	}
 
+	// url.ShortLink = c.Request.Host + "/" + url.ShortLink
+
 	c.JSON(http.StatusOK, url)
 }
 
@@ -55,6 +57,12 @@ func (h *urlShortenerHandler) Redirect(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "shortLink cannot be empty"})
 		return
 	}
+
+	// sortlin := "localhost:8080/27a41f8c"
+
+	// sort := strings.Split(shortLink, "/")
+	// sorts := sort[len(sort)-1]
+	// log.Println("\n split", sort[len(sort)-1])
 
 	longURL, err := h.service.Redirect(shortLink)
 	log.Println("\n longurl from redirect", longURL)
