@@ -14,7 +14,7 @@ import (
 )
 
 type URLShortenerService interface {
-	ShortenURL(longURL string) (model.URLResponse, error)
+	ShortenURL(longURL string) (*model.URLResponse, error)
 	Redirect(shortLink string) (string, error)
 }
 
@@ -35,22 +35,22 @@ func NewURLShortenerService(repo repository.URLShortenerRepository) URLShortener
 	}
 }
 
-func (s *urlShortenerService) ShortenURL(longURL string) (model.URLResponse, error) {
+func (s *urlShortenerService) ShortenURL(longURL string) (*model.URLResponse, error) {
 
 	url, count, err := s.repo.FindByLongURL(longURL)
 	if err == nil {
-		return model.URLResponse{ShortLink: url.ShortLink}, nil
+		return &model.URLResponse{ShortLink: url.ShortLink}, nil
 	}
 
 	if count >= 20000 {
-		return model.URLResponse{}, err
+		return &model.URLResponse{}, err
 	}
 
 	log.Println("\n longurl service", longURL)
 
 	shortLink, err := s.generateShortLink()
 	if err != nil {
-		return model.URLResponse{}, err
+		return &model.URLResponse{}, err
 	}
 
 	log.Println("\n shotlink in service", shortLink)
@@ -65,10 +65,10 @@ func (s *urlShortenerService) ShortenURL(longURL string) (model.URLResponse, err
 	err = s.repo.CreateShortURL(url)
 	log.Println("\n err in create", err)
 	if err == nil {
-		return model.URLResponse{ShortLink: url.ShortLink}, nil
+		return &model.URLResponse{ShortLink: url.ShortLink}, nil
 	}
 
-	return model.URLResponse{ShortLink: url.ShortLink}, nil
+	return &model.URLResponse{ShortLink: url.ShortLink}, nil
 }
 
 func (s *urlShortenerService) Redirect(shortLink string) (string, error) {
