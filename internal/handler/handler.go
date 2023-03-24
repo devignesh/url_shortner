@@ -10,6 +10,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// URLShortenerHandler defines methods to handle URL shortener requests
 type URLShortenerHandler interface {
 	ShortenURL(c *gin.Context)
 	Redirect(c *gin.Context)
@@ -19,6 +20,7 @@ type urlShortenerHandler struct {
 	service service.URLShortenerService
 }
 
+// NewURLShortenerHandler creates a new instance of URLShortenerHandler
 func NewURLShortenerHandler(service service.URLShortenerService) URLShortenerHandler {
 	return &urlShortenerHandler{
 		service: service,
@@ -58,12 +60,6 @@ func (h *urlShortenerHandler) Redirect(c *gin.Context) {
 		return
 	}
 
-	// sortlin := "localhost:8080/27a41f8c"
-
-	// sort := strings.Split(shortLink, "/")
-	// sorts := sort[len(sort)-1]
-	// log.Println("\n split", sort[len(sort)-1])
-
 	longURL, err := h.service.Redirect(shortLink)
 	log.Println("\n longurl from redirect", longURL)
 	if err != nil {
@@ -78,6 +74,7 @@ func (h *urlShortenerHandler) Redirect(c *gin.Context) {
 	c.Redirect(http.StatusMovedPermanently, longURL)
 }
 
+// SetupRouter setups the gin router for the URL shortener service
 func SetupRouter(service service.URLShortenerService) *gin.Engine {
 
 	log.Println("\n came to setup routes")
