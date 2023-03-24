@@ -7,6 +7,7 @@ import (
 	"github.com/jinzhu/gorm"
 )
 
+// URLShortenerRepository defines methods to interact with the URLs table in the database
 type URLShortenerRepository interface {
 	FindByShortLink(shortLink string) (*URL, error)
 	FindByLongURL(longURL string) (*URL, int, error)
