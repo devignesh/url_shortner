@@ -11,4 +11,4 @@ To Run,
 
     docker-compose up
 
-    go cmd/main.go
+    go run cmd/main.go
