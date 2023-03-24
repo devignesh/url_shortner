@@ -13,6 +13,7 @@ import (
 	"github.com/google/uuid"
 )
 
+// URLShortenerService defines methods to interact with the URL shortener service
 type URLShortenerService interface {
 	ShortenURL(longURL string) (*model.URLResponse, error)
 	Redirect(shortLink string) (string, error)
@@ -28,6 +29,7 @@ const (
 	expiryTime      = time.Hour * 24
 )
 
+// NewURLShortenerService creates a new instance of URLShortenerService
 func NewURLShortenerService(repo repository.URLShortenerRepository) URLShortenerService {
 
 	return &urlShortenerService{
